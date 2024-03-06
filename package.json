@@ -1,0 +1,68 @@
+{
+  "name": "amazon-s3-url",
+  "version": "1.0.0",
+  "description": "Amazon S3 URL formatter and parser",
+  "type": "module",
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./src/index.ts",
+        "default": "./src/index.ts"
+      },
+      "import": {
+        "types": "./src/index.ts",
+        "default": "./src/index.ts"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "main": "./dist/index.js",
+    "module": "./dist/index.cjs",
+    "exports": {
+      ".": {
+        "require": {
+          "types": "./dist/index.d.cts",
+          "default": "./dist/index.cjs"
+        },
+        "import": {
+          "types": "./dist/index.d.ts",
+          "default": "./dist/index.js"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "test": "vitest",
+    "build": "tsc --noEmit",
+    "bundle": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "lint": "biome check . --apply --no-errors-on-unmatched",
+    "prepare": "husky",
+    "prepublishOnly": "pnpm run build && pnpm run bundle"
+  },
+  "keywords": [],
+  "author": "Chris Cook",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@biomejs/biome": "^1.5.3",
+    "@tsconfig/node18": "^18.2.2",
+    "@types/aws-lambda": "^8.10.133",
+    "@types/node": "^20.11.16",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "tsup": "^8.0.2",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.2"
+  },
+  "lint-staged": {
+    "*.{ts,json}": [
+      "biome check --apply --no-errors-on-unmatched"
+    ]
+  }
+}
