@@ -48,6 +48,8 @@
   },
   "keywords": [],
   "author": "Chris Cook",
+  "homepage": "https://github.com/zirkelc/amazon-s3-url",
+  "repository": "https://github.com/zirkelc/amazon-s3-url",
   "license": "MIT",
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",
