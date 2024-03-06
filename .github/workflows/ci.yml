@@ -2,6 +2,7 @@ name: CI
 
 on:
   push:
+  pull_request:
 
 jobs:
   lint:
@@ -29,7 +30,7 @@ jobs:
         run: |
           pnpm lint
 
-  tests:
+  test:
     name: Tests
     runs-on: ubuntu-latest
     strategy:
@@ -56,4 +57,35 @@ jobs:
 
       - name: Tests
         run: |
-          pnpm test:ci
+          pnpm test
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
+      - name: Install
+        id: install
+        run: |
+          pnpm i
+
+      - name: Coverage
+        run: |
+          pnpm coverage
+
+      - name: Report Coverage
+        if: ${{ steps.install.conclusion == 'success' && github.event_name == 'pull_request' }}
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          vite-config-path: vitest.config.ts          

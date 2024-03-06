@@ -42,7 +42,8 @@ type Test = {
 	object: S3Object;
 };
 
-// TODO add negative tests
+describe.todo("add negative tests");
+describe.todo("add type tests");
 
 describe("isS3Url", () => {
 	test.each([s3GlobalPathStyle])(
