@@ -36,6 +36,7 @@
       }
     }
   },
+  "packageManager": "pnpm@8.8.0",
   "scripts": {
     "test": "vitest",
     "build": "tsc --noEmit",
