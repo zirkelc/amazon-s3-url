@@ -1,6 +1,6 @@
 # Amazon S3 URL Formatter and Parser
 This small and dependency-free library is designed to help you check, format and parse Amazon S3 URLs.
-Please note that this library does only rudimentary URL validation on the structure of the URL. It currently does validate [bucket names](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html) and [object keys](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html) against the rules defined in the AWS documentation.
+Please note that this library does only rudimentary URL validation on the structure of the URL. It currently does not validate [bucket names](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html) and [object keys](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html) against the rules defined in the AWS documentation.
 
 ## Amazon S3 URL Formats
 Amazon S3 supports a combination of different styles:
