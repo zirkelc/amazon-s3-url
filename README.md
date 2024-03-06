@@ -5,26 +5,31 @@ Please note that this library does only rudimentary URL validation on the struct
 ## Amazon S3 URL Formats
 Amazon S3 supports a combination of different styles:
 
-**Virtual-hosted-style** and **Path-style** 
-The difference between these two styles is how the bucket name is included in the URL, either as part of the hostname or as part of the pathname.
+### Virtual-hosted-style and Path-style
 
+The difference between these two styles is how the bucket name is included in the URL, either as part of the hostname or as part of the pathname.
 - Virtual-hosted-style URLs have the bucket name as part of the host: `<bucket>.s3.amazonaws.com/<key>` 
 - Path-style URLs have the bucket name as part of the path, e.g. `s3.amazonaws.com/<bucket>/<key>` 
-	> [!WARNING]  
-	> Path-style URLs will be discontinued in the future See [Amazon S3 backward compatibility](https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#path-style-access) for more information.
+	
+> [!WARNING]
+> Path-style URLs will be discontinued in the future See [Amazon S3 backward compatibility](https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#path-style-access) for more information.
 
-**Regional** and **Legacy**
+### Regional and Legacy
+
 The difference between these two styles is if the region is included in the URL.
 
 - Regional URLs use the regional endpoint `s3.<region>.amazonaws.com`
 - Legacy URLs use the global endpoint `s3.amazonaws.com`
-	> [!WARNING]  
-	> Only some regions support legacy-style URLs. See [Amazon S3 backward compatibility](https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#VirtualHostingBackwardsCompatibility) for more information.
 
-**S3** and **HTTPS**
+> [!WARNING]  
+> Only some regions support legacy-style URLs. See [Amazon S3 backward compatibility](https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#VirtualHostingBackwardsCompatibility) for more information.
+
+### Protocol S3 and HTTPS
+
 The choice whether to use `s3://` or `https://` depends on the client used to access the S3 bucket.
 
-**Global** 
+### Global
+
 The global format `s3://<bucket>/<key>` is the S3 URI that is used by the AWS management console. This format is only available with the `s3://` protocol.
 
 ## Installation
@@ -37,18 +42,6 @@ yarn add amazon-s3-url
 
 # pnpm
 pnpm add amazon-s3-url
-```
-
-### ESM and CommonJS
-This library is written in TypeScript and is published with ESM and CommonJS support.
-That means you can `import` or `require` the library in your project.
-
-```typescript
-// ESM
-import { formatS3Url } from 'amazon-s3-url';
-
-// CommonJS
-const { formatS3Url } = require('amazon-s3-url');
 ```
 
 ## Usage
@@ -92,14 +85,28 @@ type S3UrlFormat =
 	| "https-region-virtual-host";
 ```
 
+### ESM and CommonJS
+This library is written in TypeScript and is published with ESM and CommonJS support.
+That means you can `import` or `require` the library in your project.
+
+```typescript
+// ESM
+import { formatS3Url } from 'amazon-s3-url';
+
+// CommonJS
+const { formatS3Url } = require('amazon-s3-url');
+```
+
 ### Function `formatS3Url`
 This function takes an `s3Object` and an optional `format` and returns a formatted URL string. 
 The `format` parameter is optional and defaults to `s3-global-path`. 
 
+Signature:
 ```ts
 function formatS3Url(s3Object: S3Object, format?: S3UrlFormat): string;
 ```
 
+Example:
 ```typescript
 import { formatS3Url, S3Object } from 'amazon-s3-url';
 
@@ -139,10 +146,12 @@ This function takes an S3 URL string and returns an `S3Object` or throws an erro
 The `format` parameter is optional and can be used to specify the expected format of the URL. 
 If the format is not specified, the function will try to parse the URL in all supported formats.
 
+Signature:
 ```ts
 function parseS3Url(s3Url: string, format?: S3UrlFormat): S3Object;
 ```
 
+Example:
 ```typescript
 import { parseS3Url } from 'amazon-s3-url';
 
@@ -179,10 +188,12 @@ This function takes a string and returns a boolean indicating whether the string
 The `format` parameter is optional and can be used to specify the expected format of the URL. 
 If the format is not specified, the function will try to parse the URL in all supported formats.
 
+Signature:
 ```ts
 function isS3Url(s3Url: string, format?: S3UrlFormat): boolean;
 ```
 
+Example:
 ```typescript
 import { isS3Url } from 'amazon-s3-url';
 
@@ -217,6 +228,7 @@ const isValidS3Url = isS3Url('https://bucket.s3.us-west-1.amazonaws.com/key');
 ## Limitations
 - The bucket name and object key are not validated against the rules defined in the AWS documentation.
 - The region is not validated against the list of valid AWS regions.
+- The website endpoint is not supported yet.
 - Some older Amazon S3 regions support endpoints that contain a dash `-` between `s3` and the region, for example `s3‐us-west-2` instead of a dot `s3.us-west-2`. This is not supported by this library.
 - Only the the US East (N. Virginia) region supports the legacy path-style URLs `https://s3.amazonaws.com/bucket`. All other regions require the regional path-style syntax. This is not validated by this library.
 
