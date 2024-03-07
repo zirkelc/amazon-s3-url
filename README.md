@@ -52,15 +52,15 @@ This type represents an S3 object and has the properties `bucket` and `key`. The
 
 ```ts
 type S3Object = {
-	bucket: string;
-	key: string;
-	region?: string;
+  bucket: string;
+  key: string;
+  region?: string;
 };
 
 const s3Object: S3Object = {
-	bucket: 'bucket',
-	key: 'key',
-	region: 'us-west-1'
+  bucket: 'bucket',
+  key: 'key',
+  region: 'us-west-1'
 };
 ```
 
@@ -74,15 +74,15 @@ The format has the structure `<protocol>-<endpoint>-<style>` with the following 
 
 ```ts
 type S3UrlFormat = 
-	| "s3-global-path"
-	| "s3-legacy-path"
-	| "s3-legacy-virtual-host"
-	| "https-legacy-path"
-	| "https-legacy-virtual-host"
-	| "s3-region-path"
-	| "s3-region-virtual-host"
-	| "https-region-path"
-	| "https-region-virtual-host";
+  | "s3-global-path"
+  | "s3-legacy-path"
+  | "s3-legacy-virtual-host"
+  | "https-legacy-path"
+  | "https-legacy-virtual-host"
+  | "s3-region-path"
+  | "s3-region-virtual-host"
+  | "https-region-path"
+  | "https-region-virtual-host";
 ```
 
 ### ESM and CommonJS
@@ -155,31 +155,31 @@ Example:
 ```typescript
 import { parseS3Url } from 'amazon-s3-url';
 
-// { bucket: 'bucket', key: 'key' }
+// s3-global-path
 const s3Object = parseS3Url('s3://bucket/key');
 
-// { bucket: 'bucket', key: 'key' }
+// s3-legacy-path
 const s3Object = parseS3Url('s3://s3.amazonaws.com/bucket/key');
 
-// { bucket: 'bucket', key: 'key' }
+// s3-legacy-virtual-host
 const s3Object = parseS3Url('s3://bucket.s3.amazonaws.com/key');
 
-// { bucket: 'bucket', key: 'key' }
+// https-legacy-path
 const s3Object = parseS3Url('https://s3.amazonaws.com/bucket/key');
 
-// { bucket: 'bucket', key: 'key' }
+// https-legacy-virtual-host
 const s3Object = parseS3Url('https://bucket.s3.amazonaws.com/key');
 
-// { bucket: 'bucket', key: 'key', region: 'us-west-1' }
+// s3-region-path
 const s3Object = parseS3Url('s3://s3.us-west-1.amazonaws.com/bucket/key');
 
-// { bucket: 'bucket', key: 'key', region: 'us-west-1' }
+// s3-region-virtual-host
 const s3Object = parseS3Url('s3://bucket.s3.us-west-1.amazonaws.com/key');
 
-// { bucket: 'bucket', key: 'key', region: 'us-west-1' }
+// https-region-path
 const s3Object = parseS3Url('https://s3.us-west-1.amazonaws.com/bucket/key');
 
-// { bucket: 'bucket', key: 'key', region: 'us-west-1' }
+// https-region-virtual-host
 const s3Object = parseS3Url('https://bucket.s3.us-west-1.amazonaws.com/key');
 ```
 
@@ -197,38 +197,39 @@ Example:
 ```typescript
 import { isS3Url } from 'amazon-s3-url';
 
-// true
-const isValidS3Url = isS3Url('s3://bucket/key');
+// s3-global-path
+isS3Url('s3://bucket/key');
 
-// true
-const isValidS3Url = isS3Url('s3://s3.amazonaws.com/bucket/key');
+// s3-legacy-path
+isS3Url('s3://s3.amazonaws.com/bucket/key');
 
-// true
-const isValidS3Url = isS3Url('s3://bucket.s3.amazonaws.com/key');
+// s3-legacy-virtual-host
+isS3Url('s3://bucket.s3.amazonaws.com/key');
 
-// true
-const isValidS3Url = isS3Url('https://s3.amazonaws.com/bucket/key');
+// https-legacy-path
+isS3Url('https://s3.amazonaws.com/bucket/key');
 
-// true
-const isValidS3Url = isS3Url('https://bucket.s3.amazonaws.com/key');
+// https-legacy-virtual-host
+isS3Url('https://bucket.s3.amazonaws.com/key');
 
-// true
-const isValidS3Url = isS3Url('s3://s3.us-west-1.amazonaws.com/bucket/key');
+// s3-region-path
+isS3Url('s3://s3.us-west-1.amazonaws.com/bucket/key');
 
-// true
-const isValidS3Url = isS3Url('s3://bucket.s3.us-west-1.amazonaws.com/key');
+// s3-region-virtual-host
+isS3Url('s3://bucket.s3.us-west-1.amazonaws.com/key');
 
-// true
-const isValidS3Url = isS3Url('https://s3.us-west-1.amazonaws.com/bucket/key');
+// https-region-path
+isS3Url('https://s3.us-west-1.amazonaws.com/bucket/key');
 
-// true
-const isValidS3Url = isS3Url('https://bucket.s3.us-west-1.amazonaws.com/key');
+// https-region-virtual-host
+isS3Url('https://bucket.s3.us-west-1.amazonaws.com/key');
 ```
 
 ## Limitations
 - The bucket name and object key are not validated against the rules defined in the AWS documentation.
 - The region is not validated against the list of valid AWS regions.
 - The website endpoint is not supported yet.
+- The dual-stack, fips, accesspoint and control endpoint are not supported yet.
 - Some older Amazon S3 regions support endpoints that contain a dash `-` between `s3` and the region, for example `s3‐us-west-2` instead of a dot `s3.us-west-2`. This is not supported by this library.
 - Only the the US East (N. Virginia) region supports the legacy path-style URLs `https://s3.amazonaws.com/bucket`. All other regions require the regional path-style syntax. This is not validated by this library.
 
@@ -238,3 +239,4 @@ const isValidS3Url = isS3Url('https://bucket.s3.us-west-1.amazonaws.com/key');
 - [Path-style request](https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#path-style-access)
 - [Virtual-hosted-style request](https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#virtual-hosted-style-access)
 - [Amazon S3 backward compatibility](https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#VirtualHostingBackwardsCompatibility)
+- [Amazon Simple Storage Service endpoints](https://docs.aws.amazon.com/general/latest/gr/s3.html)
