@@ -1,9 +1,11 @@
 import {
-	GLOBAL_PATH_STYLE_REGEX,
-	LEGACY_PATH_STYLE_REGEX,
-	LEGACY_VIRTUAL_HOST_STYLE_REGEX,
-	REGION_PATH_STYLE_REGEX,
-	REGION_VIRTUAL_HOST_STYLE_REGEX,
+	S3_DASH_REGION_PATH_STYLE_REGEX,
+	S3_DASH_REGION_VIRTUAL_HOST_STYLE_REGEX,
+	S3_DOT_REGION_PATH_STYLE_REGEX,
+	S3_DOT_REGION_VIRTUAL_HOST_STYLE_REGEX,
+	S3_GLOBAL_PATH_STYLE_REGEX,
+	S3_LEGACY_PATH_STYLE_REGEX,
+	S3_LEGACY_VIRTUAL_HOST_STYLE_REGEX,
 	isGlobalPathStyle,
 	isLegacyPathStyle,
 	isLegacyVirtualHostStyle,
@@ -36,7 +38,7 @@ function assertUrl(url: unknown): asserts url is string {
 }
 
 const parseGlobalPathStyle = (s3url: string): S3Object => {
-	const match = s3url.match(GLOBAL_PATH_STYLE_REGEX);
+	const match = s3url.match(S3_GLOBAL_PATH_STYLE_REGEX);
 	if (!match) throw new Error(`Invalid S3 path-style URL: ${s3url}`);
 
 	const { bucket, key } = match.groups!;
@@ -47,7 +49,11 @@ const parseGlobalPathStyle = (s3url: string): S3Object => {
 };
 
 const parseRegionPathStyle = (s3url: string): S3Object => {
-	const match = s3url.match(REGION_PATH_STYLE_REGEX);
+	const match = S3_DOT_REGION_PATH_STYLE_REGEX.test(s3url)
+		? // s3.<region-name>.amazonaws.com/<bucket-name>/<key-name>
+		  s3url.match(S3_DOT_REGION_PATH_STYLE_REGEX)
+		: // s3-<region-name>.amazonaws.com/<bucket-name>/<key-name>
+		  s3url.match(S3_DASH_REGION_PATH_STYLE_REGEX);
 	if (!match) throw new Error(`Invalid S3 path-style URL: ${s3url}`);
 
 	const { bucket, key, region } = match.groups!;
@@ -59,7 +65,7 @@ const parseRegionPathStyle = (s3url: string): S3Object => {
 };
 
 const parseLegacyPathStyle = (s3url: string): S3Object => {
-	const match = s3url.match(LEGACY_PATH_STYLE_REGEX);
+	const match = s3url.match(S3_LEGACY_PATH_STYLE_REGEX);
 	if (!match) throw new Error(`Invalid S3 path-style URL: ${s3url}`);
 
 	const { bucket, key } = match.groups!;
@@ -70,7 +76,11 @@ const parseLegacyPathStyle = (s3url: string): S3Object => {
 };
 
 const parseRegionVirtualHostStyle = (s3url: string): S3Object => {
-	const match = s3url.match(REGION_VIRTUAL_HOST_STYLE_REGEX);
+	const match = S3_DOT_REGION_VIRTUAL_HOST_STYLE_REGEX.test(s3url)
+		? // <bucket-name>.s3.<region-name>.amazonaws.com/<key-name>
+		  s3url.match(S3_DOT_REGION_VIRTUAL_HOST_STYLE_REGEX)
+		: // <bucket-name>.s3-<region-name>.amazonaws.com/<key-name>
+		  s3url.match(S3_DASH_REGION_VIRTUAL_HOST_STYLE_REGEX);
 	if (!match) throw new Error(`Invalid S3 virtual-hosted-style URL: ${s3url}`);
 
 	const { bucket, key, region } = match.groups!;
@@ -82,7 +92,7 @@ const parseRegionVirtualHostStyle = (s3url: string): S3Object => {
 };
 
 const parseLegacyVirtualHostStyle = (s3url: string): S3Object => {
-	const match = s3url.match(LEGACY_VIRTUAL_HOST_STYLE_REGEX);
+	const match = s3url.match(S3_LEGACY_VIRTUAL_HOST_STYLE_REGEX);
 	if (!match) throw new Error(`Invalid S3 virtual-hosted-style URL: ${s3url}`);
 
 	const { bucket, key } = match.groups!;
@@ -92,6 +102,11 @@ const parseLegacyVirtualHostStyle = (s3url: string): S3Object => {
 	return { bucket, key };
 };
 
+/**
+ * Parse an S3 URL into an S3 object.
+ * If the format is not specified, the function will attempt to detect the format.
+ * If the format is specified, the function will only parse the URL if it matches the format.
+ */
 export const parseS3Url = (s3url: string, format?: S3UrlFormat): S3Object => {
 	assertUrl(s3url);
 

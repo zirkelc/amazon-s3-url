@@ -37,6 +37,11 @@ const formatLegacyPath = (
 	return `${protocol}://s3.amazonaws.com/${formatPath(s3Object)}`;
 };
 
+/**
+ * Format a path-style URL with the region specified.
+ * The region is formatted in dot-style as `s3.<region-name>.amazonaws.com`.
+ * The deprecated dash-style `s3-<region-name>.amazonaws.com` is not supported.
+ */
 const formatRegionPath = (
 	s3Object: S3Object,
 	protocol: S3UrlProtocol,
@@ -58,6 +63,11 @@ const formatLegacyVirtualHostStyle = (
 	return `${protocol}://${bucket}.s3.amazonaws.com/${key}`;
 };
 
+/**
+ * Format a virtual-host-style URL with the region specified.
+ * The region is formatted in dot-style as `s3.<region-name>.amazonaws.com`.
+ * The deprecated dash-style `s3-<region-name>.amazonaws.com` is not supported.
+ */
 const formatRegionVirtualHostStyle = (
 	s3Object: S3Object,
 	protocol: S3UrlProtocol,
@@ -70,6 +80,13 @@ const formatRegionVirtualHostStyle = (
 	return `${protocol}://${bucket}.s3.${region}.amazonaws.com/${key}`;
 };
 
+/**
+ * Formats an URL based on the specified format.
+ * If the format is not specified, the global path-style format is used.
+ * If the format is a regional format, the region must be specified in the S3 object.
+ * The region will always be formatted in dot-style as `s3.<region-name>.amazonaws.com`.
+ * The deprecated dash-style `s3-<region-name>.amazonaws.com` is not supported for formatting.
+ */
 export const formatS3Url = (
 	s3Object: S3Object,
 	format?: S3UrlFormat,
