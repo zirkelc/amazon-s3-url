@@ -1,3 +1,6 @@
+[![CI](https://github.com/zirkelc/amazon-s3-url/actions/workflows/ci.yml/badge.svg)](https://github.com/zirkelc/aws-sigv4-fetch/actions/workflows/ci.yml)
+![npm](https://img.shields.io/npm/v/amazon-s3-url)
+
 # Amazon S3 URL Formatter and Parser
 This small and dependency-free library is designed to help you check, format and parse Amazon S3 URLs.
 Please note that this library does only rudimentary URL validation on the structure of the URL. It currently does not validate [bucket names](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html) and [object keys](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html) against the rules defined in the AWS documentation.
