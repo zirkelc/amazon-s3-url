@@ -8,14 +8,22 @@ export const httpLegacyPathStyle =
 	"https://s3.amazonaws.com/my-bucket/key-1/key-2";
 export const httpLegacyVirtualHostedStyle =
 	"https://my-bucket.s3.amazonaws.com/key-1/key-2";
-export const s3RegionPathStyle =
-	"s3://s3.us-west-1.amazonaws.com/my-bucket/key-1/key-2";
-export const s3RegionVirtualHostedStyle =
-	"s3://my-bucket.s3.us-west-1.amazonaws.com/key-1/key-2";
-export const httpRegionPathStyle =
-	"https://s3.us-west-1.amazonaws.com/my-bucket/key-1/key-2";
-export const httpRegionVirtualHostedStyle =
-	"https://my-bucket.s3.us-west-1.amazonaws.com/key-1/key-2";
+export const s3DotRegionPathStyle =
+	"s3://s3.us-west-2.amazonaws.com/my-bucket/key-1/key-2";
+export const s3DotRegionVirtualHostedStyle =
+	"s3://my-bucket.s3.us-west-2.amazonaws.com/key-1/key-2";
+export const s3DashRegionPathStyle =
+	"s3://s3-us-west-2.amazonaws.com/my-bucket/key-1/key-2";
+export const s3DashRegionVirtualHostedStyle =
+	"s3://my-bucket.s3-us-west-2.amazonaws.com/key-1/key-2";
+export const httpDotRegionPathStyle =
+	"https://s3.us-west-2.amazonaws.com/my-bucket/key-1/key-2";
+export const httpDotRegionVirtualHostedStyle =
+	"https://my-bucket.s3.us-west-2.amazonaws.com/key-1/key-2";
+export const httpDashRegionPathStyle =
+	"https://s3-us-west-2.amazonaws.com/my-bucket/key-1/key-2";
+export const httpDashRegionVirtualHostedStyle =
+	"https://my-bucket.s3-us-west-2.amazonaws.com/key-1/key-2";
 
 export const s3GlobalObject: S3Object = {
 	bucket: "my-bucket",
@@ -25,7 +33,7 @@ export const s3GlobalObject: S3Object = {
 export const s3RegionObject: S3Object = {
 	bucket: "my-bucket",
 	key: "key-1/key-2",
-	region: "us-west-1",
+	region: "us-west-2",
 };
 
 export const invalidGlobalUrls = [
@@ -56,21 +64,21 @@ export const invalidLegacyUrls = [
 
 export const invalidRegionUrls = [
 	// region path-style
-	"s3://s3.us-west-1.amazonaws.com",
-	"s3://s3.us-west-1.amazonaws.com/",
-	"s3://s3.us-west-1.amazonaws.com/bucket",
-	"s3://s3.us-west-1.amazonaws.com/bucket/",
+	"s3://s3.us-west-2.amazonaws.com",
+	"s3://s3.us-west-2.amazonaws.com/",
+	"s3://s3.us-west-2.amazonaws.com/bucket",
+	"s3://s3.us-west-2.amazonaws.com/bucket/",
 	// region virtual-hosted-style
-	"s3://bucket.s3.us-west-1.amazonaws.com",
-	"s3://bucket.s3.us-west-1.amazonaws.com/",
+	"s3://bucket.s3.us-west-2.amazonaws.com",
+	"s3://bucket.s3.us-west-2.amazonaws.com/",
 	// http region path-style
-	"https://s3.us-west-1.amazonaws.com",
-	"https://s3.us-west-1.amazonaws.com/",
-	"https://s3.us-west-1.amazonaws.com/bucket",
-	"https://s3.us-west-1.amazonaws.com/bucket/",
+	"https://s3.us-west-2.amazonaws.com",
+	"https://s3.us-west-2.amazonaws.com/",
+	"https://s3.us-west-2.amazonaws.com/bucket",
+	"https://s3.us-west-2.amazonaws.com/bucket/",
 	// http region virtual-hosted-style
-	"https://bucket.s3.us-west-1.amazonaws.com",
-	"https://bucket.s3.us-west-1.amazonaws.com/",
+	"https://bucket.s3.us-west-2.amazonaws.com",
+	"https://bucket.s3.us-west-2.amazonaws.com/",
 ];
 
 export const invalidUrls = [
@@ -104,22 +112,42 @@ export const globalUrls: Test[] = [
 export const regionalUrls: Test[] = [
 	{
 		format: "s3-region-path",
-		url: s3RegionPathStyle,
+		url: s3DotRegionPathStyle,
+		object: s3RegionObject,
+	},
+	{
+		format: "s3-region-path",
+		url: s3DashRegionPathStyle,
 		object: s3RegionObject,
 	},
 	{
 		format: "s3-region-virtual-host",
-		url: s3RegionVirtualHostedStyle,
+		url: s3DotRegionVirtualHostedStyle,
+		object: s3RegionObject,
+	},
+	{
+		format: "s3-region-virtual-host",
+		url: s3DashRegionVirtualHostedStyle,
 		object: s3RegionObject,
 	},
 	{
 		format: "https-region-path",
-		url: httpRegionPathStyle,
+		url: httpDotRegionPathStyle,
+		object: s3RegionObject,
+	},
+	{
+		format: "https-region-path",
+		url: httpDashRegionPathStyle,
 		object: s3RegionObject,
 	},
 	{
 		format: "https-region-virtual-host",
-		url: httpRegionVirtualHostedStyle,
+		url: httpDotRegionVirtualHostedStyle,
+		object: s3RegionObject,
+	},
+	{
+		format: "https-region-virtual-host",
+		url: httpDashRegionVirtualHostedStyle,
 		object: s3RegionObject,
 	},
 ];

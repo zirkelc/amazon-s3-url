@@ -16,7 +16,7 @@ describe.todo("add type tests");
 
 describe("isS3Url", () => {
 	test.each(globalUrls)(
-		"should return true for valid global url: %s",
+		"should return true for valid global url: $url",
 		async ({ url, format }) => {
 			expect(isS3Url(url)).toBe(true);
 			expect(isS3Url(url, format)).toBe(true);
@@ -24,7 +24,7 @@ describe("isS3Url", () => {
 	);
 
 	test.each(legacyUrls)(
-		"should return true for valid legacy url: %s",
+		"should return true for valid legacy url: $url",
 		async ({ url, format }) => {
 			expect(isS3Url(url)).toBe(true);
 			expect(isS3Url(url, format)).toBe(true);
@@ -32,7 +32,7 @@ describe("isS3Url", () => {
 	);
 
 	test.each(regionalUrls)(
-		"should return true for valid regional url: %s",
+		"should return true for valid regional url: $url",
 		async ({ url, format }) => {
 			expect(isS3Url(url)).toBe(true);
 			expect(isS3Url(url, format)).toBe(true);

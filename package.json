@@ -1,6 +1,6 @@
 {
   "name": "amazon-s3-url",
-  "version": "1.0.2",
+  "version": "1.0.3-alpha.0",
   "description": "Amazon S3 URL formatter and parser",
   "type": "module",
   "main": "./src/index.ts",
@@ -44,7 +44,8 @@
     "bundle": "tsup src/index.ts --format cjs,esm --dts --clean",
     "lint": "biome check . --apply --no-errors-on-unmatched",
     "prepare": "husky",
-    "prepublishOnly": "pnpm run build && pnpm run bundle"
+    "prepublishOnly": "pnpm run build && pnpm run bundle",
+    "release:alpha": "pnpm version prerelease --preid alpha && pnpm publish --tag alpha --no-git-checks"
   },
   "keywords": [],
   "author": "Chris Cook",

@@ -4,33 +4,60 @@ import { S3Object, S3UrlFormat, S3UrlProtocol } from "./types.js";
 // https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
 
 /**
- * s3://<bucket-name>/<key-name>
+ * `s3://<bucket-name>/<key-name>`
  */
-export const GLOBAL_PATH_STYLE_REGEX = /^s3:\/\/(?<bucket>[^/]+)\/(?<key>.+)$/;
+export const S3_GLOBAL_PATH_STYLE_REGEX =
+	/^s3:\/\/(?<bucket>[^/]+)\/(?<key>.+)$/;
 
 /**
- * <s3|https>://s3.amazonaws.com/<bucket-name>/<key-name>
+ * `<s3|https>://s3.amazonaws.com/<bucket-name>/<key-name>`
+ *
+ * @see https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#VirtualHostingBackwardsCompatibility
  */
-export const LEGACY_PATH_STYLE_REGEX =
+export const S3_LEGACY_PATH_STYLE_REGEX =
 	/^(?<protocol>(s3|https)):\/\/s3\.amazonaws\.com\/(?<bucket>[^/]+)\/(?<key>.+)$/;
 
 /**
- * <s3|https>://s3.<region-name>.amazonaws.com/<bucket-name>/<key-name>
+ * `<s3|https>://s3.<region-name>.amazonaws.com/<bucket-name>/<key-name>`
+ *
+ * @see https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#path-style-access
  */
-export const REGION_PATH_STYLE_REGEX =
+export const S3_DOT_REGION_PATH_STYLE_REGEX =
 	/^(?<protocol>(s3|https)):\/\/s3\.(?<region>[^.]+)\.amazonaws\.com\/(?<bucket>[^/]+)\/(?<key>.+)$/;
 
 /**
- * <s3|https>://<bucket-name>.s3.amazonaws.com/<key-name>
+ * `<s3|https>://s3-<region-name>.amazonaws.com/<bucket-name>/<key-name>`
+ *
+ * @see https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#path-style-access
+ * @see https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#VirtualHostingBackwardsCompatibility
  */
-export const LEGACY_VIRTUAL_HOST_STYLE_REGEX =
+export const S3_DASH_REGION_PATH_STYLE_REGEX =
+	/^(?<protocol>(s3|https)):\/\/s3-(?<region>[^.]+)\.amazonaws\.com\/(?<bucket>[^/]+)\/(?<key>.+)$/;
+
+/**
+ * `<s3|https>://<bucket-name>.s3.amazonaws.com/<key-name>`
+ *
+ * @see https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#VirtualHostingBackwardsCompatibility
+ */
+export const S3_LEGACY_VIRTUAL_HOST_STYLE_REGEX =
 	/^(?<protocol>(s3|https)):\/\/(?<bucket>[^.]+)\.s3\.amazonaws\.com\/(?<key>.+)$/;
 
 /**
- * <s3|https>://<bucket-name>.s3.<region-name>.amazonaws.com/<key-name>
+ * `<s3|https>://<bucket-name>.s3.<region-name>.amazonaws.com/<key-name>`
+ *
+ * @see https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#virtual-hosted-style-access
  */
-export const REGION_VIRTUAL_HOST_STYLE_REGEX =
+export const S3_DOT_REGION_VIRTUAL_HOST_STYLE_REGEX =
 	/^(?<protocol>(s3|https)):\/\/(?<bucket>[^.]+)\.s3\.(?<region>[^.]+)\.amazonaws\.com\/(?<key>.+)$/;
+
+/**
+ * `<s3|https>://<bucket-name>.s3-<region-name>.amazonaws.com/<key-name>`
+ *
+ * @see https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#virtual-hosted-style-access
+ * @see https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#VirtualHostingBackwardsCompatibility
+ */
+export const S3_DASH_REGION_VIRTUAL_HOST_STYLE_REGEX =
+	/^(?<protocol>(s3|https)):\/\/(?<bucket>[^.]+)\.s3-(?<region>[^.]+)\.amazonaws\.com\/(?<key>.+)$/;
 
 /**
  * Returns true if the given S3 URL is in path-style format.
@@ -38,23 +65,29 @@ export const REGION_VIRTUAL_HOST_STYLE_REGEX =
  * @returns
  */
 export const isGlobalPathStyle = (s3url: string): boolean => {
-	return GLOBAL_PATH_STYLE_REGEX.test(s3url);
+	return S3_GLOBAL_PATH_STYLE_REGEX.test(s3url);
 };
 
 export const isRegionPathStyle = (s3url: string): boolean => {
-	return REGION_PATH_STYLE_REGEX.test(s3url);
+	return (
+		S3_DOT_REGION_PATH_STYLE_REGEX.test(s3url) ||
+		S3_DASH_REGION_PATH_STYLE_REGEX.test(s3url)
+	);
 };
 
 export const isLegacyPathStyle = (s3url: string): boolean => {
-	return LEGACY_PATH_STYLE_REGEX.test(s3url);
+	return S3_LEGACY_PATH_STYLE_REGEX.test(s3url);
 };
 
 export const isRegionVirtualHostStyle = (s3url: string): boolean => {
-	return REGION_VIRTUAL_HOST_STYLE_REGEX.test(s3url);
+	return (
+		S3_DOT_REGION_VIRTUAL_HOST_STYLE_REGEX.test(s3url) ||
+		S3_DASH_REGION_VIRTUAL_HOST_STYLE_REGEX.test(s3url)
+	);
 };
 
 export const isLegacyVirtualHostStyle = (s3url: string): boolean => {
-	return LEGACY_VIRTUAL_HOST_STYLE_REGEX.test(s3url);
+	return S3_LEGACY_VIRTUAL_HOST_STYLE_REGEX.test(s3url);
 };
 
 export const isUrl = (url: unknown): url is string => {
@@ -66,6 +99,11 @@ export const isUrl = (url: unknown): url is string => {
 	}
 };
 
+/**
+ * Checks if the given URL is a valid S3 URL.
+ * If the format is specified, it checks if the URL matches the format.
+ * If the format is not specified, it checks if the URL matches any valid S3 URL format.
+ */
 export const isS3Url = (
 	s3url: unknown,
 	format?: S3UrlFormat,

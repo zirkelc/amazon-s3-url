@@ -9,6 +9,11 @@
  *  `<bucket-name>.s3.<region-code>.amazonaws.com/<key-name>`
  *
  * The virtual-hosted-style format is recommended for all new Amazon S3 buckets.
+ *
+ * In regional URLs, the region is specified as `s3.<region-name>.amazonaws.com`.
+ * Some older region support the `s3-<region-name>.amazonaws.com` format
+ * with a dash `-` instead of a dot `.` between `s3` and the region name.
+ *
  * Furthermore, there are two protocols for the URL: `s3` and `https`.
  *
  * @see https://docs.aws.amazon.com/general/latest/gr/s3.html
