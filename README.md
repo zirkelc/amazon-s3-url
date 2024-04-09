@@ -228,12 +228,14 @@ isS3Url('https://s3.us-west-1.amazonaws.com/bucket/key');
 isS3Url('https://bucket.s3.us-west-1.amazonaws.com/key');
 ```
 
+## Caveats
+- Some older Amazon S3 regions support endpoints that contain a dash `-` between `s3` and the region, for example `s3‐us-west-2` instead of a dot `s3.us-west-2`. This library supports parsing this format but does not format URLs with this format. See [s3-Region](https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#s3-dash-region)
+
 ## Limitations
 - The bucket name and object key are not validated against the rules defined in the AWS documentation.
 - The region is not validated against the list of valid AWS regions.
 - The website endpoint is not supported yet.
 - The dual-stack, fips, accesspoint and control endpoint are not supported yet.
-- Some older Amazon S3 regions support endpoints that contain a dash `-` between `s3` and the region, for example `s3‐us-west-2` instead of a dot `s3.us-west-2`. This is not supported by this library.
 - Only the the US East (N. Virginia) region supports the legacy path-style URLs `https://s3.amazonaws.com/bucket`. All other regions require the regional path-style syntax. This is not validated by this library.
 
 ## Resources
