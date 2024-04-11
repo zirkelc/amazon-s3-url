@@ -1,5 +1,5 @@
 [![CI](https://github.com/zirkelc/amazon-s3-url/actions/workflows/ci.yml/badge.svg)](https://github.com/zirkelc/aws-sigv4-fetch/actions/workflows/ci.yml)
-![npm](https://img.shields.io/npm/v/amazon-s3-url)
+[![npm](https://img.shields.io/npm/v/amazon-s3-url)](https://www.npmjs.com/package/amazon-s3-url)
 
 # Amazon S3 URL Formatter and Parser
 This small and dependency-free library is designed to help you check, format and parse Amazon S3 URLs.
